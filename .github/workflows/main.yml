@@ -54,3 +54,21 @@ jobs:
         steps:
           - name: Afficher un message dans le second job
             run: echo "Second job running"
+
+          - name: Publier le rapport de couverture sur Codecov
+            uses: codecov/codecov-action@v3
+            with:
+                files: ./coverage/lcov.info
+
+    deploy:
+        runs-on: ubuntu-latest
+
+        environment:
+            name: github-pages
+
+        url: ${{ steps.deployment.outputs.page_url }}
+
+        steps:
+          - name: Déployer sur GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v2
