@@ -25,27 +25,33 @@ jobs:
             with:
                 node-version: ${{ matrix.node-version }}
 
+          # Exercice 1
           - name: Afficher un message
             run: echo "Hello, GitHub Actions !"
 
+          # Exercice 2
           - name: Afficher la variable d'environnement
             run: echo "${{ env.MY_VARIABLE }}"
 
+          # Exercice 3
           - name: Afficher le secret
             run: echo "${{ secrets.MY_SECRET }}"
 
+          # Exercice 4
           - name: Créer le fichier hello.txt
             run: echo "Hello world" > hello.txt
 
           - name: Afficher le contenu de hello.txt
             run: cat hello.txt
 
+          # Exercice 5
           - name: Installer les dépendances
             run: npm i
 
           - name: Exécuter les test
-            run: npm test
+            run: npm test -- --coverage
 
+    # Exercice 6
     second_job:
         runs-on: ubuntu-latest
 
@@ -55,11 +61,17 @@ jobs:
           - name: Afficher un message dans le second job
             run: echo "Second job running"
 
-          - name: Publier le rapport de couverture sur Codecov
-            uses: codecov/codecov-action@v3
-            with:
-                files: ./coverage/lcov.info
+    # Exercice 7
+    report:
+        runs-on: ubuntu-latest
 
+        steps:
+          - name: Publier le rapport de couverture sur Codecov
+            run: npm run coveralls
+            env:
+              COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+    # Exercice 8
     deploy:
         runs-on: ubuntu-latest
 
